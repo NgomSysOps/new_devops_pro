@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: spring-boot-app
-  replicas: 2 # Number of replicas that will be created for this deployment
+  replicas: 1 # Number of replicas that will be created for this deployment
   template:
     metadata:
       labels:
@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: spring-boot-app
-          image: ngomansible/my_private_repo:v1stable # Image that will be used to containers in the cluster
           imagePullPolicy: IfNotPresent
+          image: ngomansible/my_private_repo:v1stable # Image that will be used to containers in the cluster
           ports:
             - containerPort: 8085 # The port that the container is running on in the cluster
 
