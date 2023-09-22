@@ -36,7 +36,7 @@ pipeline{
         
         stage('Building docker image'){
             steps{
-                sh 'docker build -t ngomansible/my_private_repo:latest .'
+                sh 'docker build -t ngomansible/my_private_repo:$BUILD_NUMBER .'
             }
         }
         
