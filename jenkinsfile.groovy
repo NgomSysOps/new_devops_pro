@@ -1,5 +1,5 @@
 pipeline{
-    agent {label 'label_name'}
+    agent {label 'Nodes1'}
     tools {
         maven "Maven3"
     }
@@ -18,17 +18,21 @@ pipeline{
             }
         }
         
-        stage('Scan code with SonarQube'){
+        stage('Trivy Scan Config files'){
             steps{
-                withSonarQubeEnv('SonarQube') {
-                    sh 'mvn sonar:sonar'
-                }
+                sh 'trivy fs --severity HIGH,CRITICAL --scanners config /home/ngom/jenkins_root_directory/workspace/testpipeline'
             }
         }
         
         stage('Building docker image'){
             steps{
                 sh 'docker build -t ngomansible/my_private_repo:latest .'
+            }
+        }
+        
+        stage('Trivy Scan Docker image'){
+            steps{
+                sh 'trivy image --severity HIGH,CRITICAL --no-progress --exit-code 0 ngomansible/my_private_repo:latest'
             }
         }
         
@@ -40,14 +44,13 @@ pipeline{
                 sh 'docker push ngomansible/my_private_repo:latest'
             }
         }
-
-        stage('Deploy App to kubernetes'){
+        
+        stage('Deploy app to Kubernetes'){
             steps{
-                script{
-                    kubernetesDeploy (configs: 'deployment.yaml',kubeconfigId: 'k8sConfig')
+               withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s-cred', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+                   sh ' kubectl apply -f myDeployment.yml'
                 }
             }
         }
-
     }
 }
