@@ -1,14 +1,24 @@
 pipeline{
     agent {label 'Nodes1'}
+    
     tools {
         maven "Maven3"
+        git 'git3'
     }
     
     stages{
         
         stage('Checkout code from git'){
             steps{
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/NgomSysOps/ngom_k8s_project']])
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/NgomSysOps/new_devops_pro']])
+            }
+        }
+        
+        stage('Static Code with SonarQube'){
+            steps{
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn sonar:sonar'
+                }
             }
         }
         
