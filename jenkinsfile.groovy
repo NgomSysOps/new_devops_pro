@@ -51,7 +51,7 @@ pipeline{
                 withCredentials([string(credentialsId: 'DockerToken', variable: 'docker_cred')]) {
                    sh 'docker login -u ngomansible -p ${docker_cred}' 
                 }
-                sh 'docker push ngomansible/my_private_repo:latest'
+                sh 'docker push ngomansible/my_private_repo:$BUILD_NUMBER'
             }
         }
         
