@@ -15,19 +15,6 @@ spec:
       containers:
         - name: spring-boot-app
           imagePullPolicy: IfNotPresent
-          image: ngomansible/my_private_repo:latest # Image that will be used to containers in the cluster
+          image: ngomansible/my_private_repo:56 # Image that will be used to containers in the cluster
           ports:
           - containerPort: 8085 # The port that the container is running on in the cluster
----
-apiVersion: v1 # Kubernetes API version
-kind: Service # Kubernetes resource kind we are creating
-metadata: # Metadata of the resource kind we are creating
-  name: springboot-svc
-spec:
-  selector:
-    app: spring-boot-app
-  ports:
-    - protocol: "TCP"
-      port: 80 # The port that the service is running on in the cluster
-      targetPort: 8085 # The port exposed by the service
-  type: NodePort # type of the service.
