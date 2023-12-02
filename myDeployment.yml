@@ -15,7 +15,7 @@ spec:
       containers:
         - name: spring-boot-app
           imagePullPolicy: IfNotPresent
-          image: ngomansible/my_private_repo:56 # Image that will be used to containers in the cluster
+          image: ngomansible/my_private_repo:62 # Image that will be used to containers in the cluster
           ports:
           - containerPort: 8085 # The port that the container is running on in the cluster
 ---
